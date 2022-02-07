@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Whole = styled.div`
   width: 100%;
@@ -83,16 +84,32 @@ const FindText = styled.span`
 
 const Login = () => {
   const [proc, setProc] = useState(1);
+  const [emailV, setEmailV] = useState("");
 
   const navigate = useNavigate();
 
-  const emailSubmit = () => {
+  const emailSubmit = async () => {
+    const networkResult = await axios.post(
+      "http://localhost:4000/api/user/checkEmail",
+      {
+        email: emailV,
+      }
+    );
+
+    return;
     setProc(2);
   };
 
   const checkSubmit = () => {
     navigate("/list");
   };
+
+  const emailChangeHandler = useCallback(
+    (event) => {
+      setEmailV(event.target.value);
+    },
+    [emailV]
+  );
 
   return (
     <Whole>
@@ -103,7 +120,15 @@ const Login = () => {
 
       {/* SECTION-2 [로그인 인풋] */}
       <Wrapper height="37vh">
-        {proc === 1 ? <LoginInput type="email" /> : <LoginInput type="text" />}
+        {proc === 1 ? (
+          <LoginInput
+            type="email"
+            value={emailV}
+            onChange={emailChangeHandler} // event를 함께 전달. onClick에서는 사용을 하지 않음!
+          />
+        ) : (
+          <LoginInput type="text" />
+        )}
 
         <EmailGuide>
           {proc === 1
