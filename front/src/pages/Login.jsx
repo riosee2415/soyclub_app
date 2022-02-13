@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { message } from "antd";
 
 const Whole = styled.div`
   width: 100%;
@@ -85,6 +86,7 @@ const FindText = styled.span`
 const Login = () => {
   const [proc, setProc] = useState(1);
   const [emailV, setEmailV] = useState("");
+  const [codeV, setCodeV] = useState("");
 
   const navigate = useNavigate();
 
@@ -96,11 +98,26 @@ const Login = () => {
       }
     );
 
-    return;
     setProc(2);
   };
 
-  const checkSubmit = () => {
+  const checkSubmit = async () => {
+    const result = await axios.post(
+      "http://localhost:4000/api/user/checkCode",
+      {
+        email: emailV,
+        code: codeV,
+      }
+    );
+
+    localStorage.setItem("Soy.UserId", result.data.id);
+    localStorage.setItem("Soy.Username", result.data.username);
+    localStorage.setItem("Soy.Avatar", result.data.avatar);
+    localStorage.setItem("Soy.Email", result.data.email);
+    localStorage.setItem("Soy.Status", result.data.statusMsg);
+
+    message.success(`${result.data.username}님, SOYCLUB에 오신 걸 환영합니다.`);
+
     navigate("/list");
   };
 
@@ -109,6 +126,13 @@ const Login = () => {
       setEmailV(event.target.value);
     },
     [emailV]
+  );
+
+  const codeChangeHandler = useCallback(
+    (event) => {
+      setCodeV(event.target.value);
+    },
+    [codeV]
   );
 
   return (
@@ -127,7 +151,7 @@ const Login = () => {
             onChange={emailChangeHandler} // event를 함께 전달. onClick에서는 사용을 하지 않음!
           />
         ) : (
-          <LoginInput type="text" />
+          <LoginInput type="text" value={codeV} onChange={codeChangeHandler} />
         )}
 
         <EmailGuide>

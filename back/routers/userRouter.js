@@ -72,11 +72,56 @@ router.post("/checkEmail", (req, res, next) => {
         }
       });
 
-      return res.status(200).send("SUCCESS");
+      const updateQuery = `
+        UPDATE  users
+           SET  secretCode = "${randomCode}"
+         WHERE  email = "${email}"
+      `;
+
+      db.query(updateQuery, (err, rows) => {
+        if (err) {
+          console.error(err);
+        } else {
+          return res.status(200).send("SUCCESS");
+        }
+      });
     });
   } catch (error) {
     console.error(error);
     return res.status(400).send("오류가 발생했습니다.");
+  }
+});
+
+router.post("/checkCode", (req, res, next) => {
+  const { email, code } = req.body;
+
+  const selectQuery = `
+    SELECT  id,
+            avatar,
+            email,
+            username,
+            statusMsg
+      FROM  users
+     WHERE  email = "${email}"
+       AND  secretCode = "${code}"
+  `;
+
+  try {
+    db.query(selectQuery, (err, rows) => {
+      if (err) {
+        console.error(err);
+        throw "서버장애가 발생했습니다. 잠시 후 다시 시도해주세요.";
+      }
+
+      if (rows.length === 1) {
+        return res.status(200).json(rows[0]);
+      } else {
+        return res.status(200).json(null);
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).send("잘못된 접근입니다. 다시 시도해주세요.");
   }
 });
 
