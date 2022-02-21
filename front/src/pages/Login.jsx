@@ -110,6 +110,11 @@ const Login = () => {
       }
     );
 
+    if (!result.data) {
+      message.error("로그인 정보가 올바르지 않습니다.");
+      return;
+    }
+
     localStorage.setItem("Soy.UserId", result.data.id);
     localStorage.setItem("Soy.Username", result.data.username);
     localStorage.setItem("Soy.Avatar", result.data.avatar);

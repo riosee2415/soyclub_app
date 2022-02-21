@@ -125,4 +125,35 @@ router.post("/checkCode", (req, res, next) => {
   }
 });
 
+router.post("/friend/list", (req, res, next) => {
+  const { loggedId } = req.body;
+
+  const selectQuery = `
+      SELECT	B.id,
+              B.avatar,
+              B.username,
+              B.statusMsg,
+              B.email 
+        FROM	friends		A
+       INNER
+        JOIN	users		  B
+          ON	A.whom = B.id
+       WHERE	A.who = ${loggedId}
+      ORDER   BY  B.username ASC
+  `;
+
+  try {
+    db.query(selectQuery, (error, rows) => {
+      if (error) {
+        throw "데이터베이스 접근에 실패했습니다.";
+      }
+
+      return res.status(200).json(rows);
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).send("친구목록을 불러오는 데 실패했습니다.");
+  }
+});
+
 module.exports = router;

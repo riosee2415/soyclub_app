@@ -1,8 +1,15 @@
 import React from "react";
+import TopBanner from "../components/TopBanner";
 
 class Setting extends React.Component {
   render() {
-    return <h4>Setting</h4>;
+    return (
+      <div>
+        <TopBanner title="Settings" />
+
+        <h2>Settings</h2>
+      </div>
+    );
   }
 }
 

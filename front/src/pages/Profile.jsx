@@ -1,8 +1,15 @@
 import React from "react";
+import TopBanner from "../components/TopBanner";
 
 class Profile extends React.Component {
   render() {
-    return <h4>Profile</h4>;
+    return (
+      <div>
+        <TopBanner title="Profile" />
+
+        <h2>Profile</h2>
+      </div>
+    );
   }
 }
 

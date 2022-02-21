@@ -1,8 +1,15 @@
 import React from "react";
+import TopBanner from "../components/TopBanner";
 
 class Message extends React.Component {
   render() {
-    return <h4>Message</h4>;
+    return (
+      <div>
+        <TopBanner title="Messages" />
+
+        <h2>Messages</h2>
+      </div>
+    );
   }
 }
 
