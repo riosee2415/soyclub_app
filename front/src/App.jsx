@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Message from "./pages/Message";
 import Profile from "./pages/Profile";
 import Setting from "./pages/Setting";
+import Send from "./pages/Send";
 
 const MainDiv = styled.div`
   width: 100%;
@@ -47,6 +48,7 @@ const App = () => {
               <Route exact path="/message" element={<Message />} />
               <Route exact path="/profile" element={<Profile />} />
               <Route exact path="/setting" element={<Setting />} />
+              <Route exact path="/send/:key" element={<Send />} />
             </Routes>
           </MainDiv>
 

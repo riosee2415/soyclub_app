@@ -5,6 +5,7 @@ dotenv.config();
 const cors = require("cors");
 
 const userRouter = require("./routers/userRouter");
+const msgRouter = require("./routers/msgRouter");
 
 const PORT = process.env.PORT;
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/user", userRouter);
+app.use("/api/msg", msgRouter);
 
 app.listen(PORT, () => {
   console.log(`${PORT} API SERVER START!`);

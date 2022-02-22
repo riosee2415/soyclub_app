@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -33,8 +34,14 @@ const StatusMsg = styled.span`
 `;
 
 const FriendBox = ({ pk, avatar, username, stm }) => {
+  const nav = useNavigate();
+
+  const clickAction = (key) => {
+    nav(`/send/${key}`);
+  };
+
   return (
-    <Wrapper>
+    <Wrapper onClick={() => clickAction(pk)}>
       <Avatar src={avatar} />
       <Name>{username}</Name>
       <StatusMsg>{stm ? stm : "-"}</StatusMsg>
